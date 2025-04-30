@@ -1,16 +1,15 @@
-## Hi there 👋
+# Hi, I'm James 👋
 
-<!--
-**splinesreticulating/splinesreticulating** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+I like to build practical, playful, and useful things.
 
-Here are some ideas to get you started:
+### 🔧 Featured Projects
+- 💬 [WellSaid](https://github.com/splinesreticulating/well-said) – Empathetic iMessage responses from an ever-expanding knowledgebase
+- 🎵 [Spotify Jukebox](https://github.com/splinesreticulating/spotify-jukebox) – Pick the perfect next song
+- 📻 [Spotify DJ](https://github.com/splinesreticulating/spotify-dj) – Smart live playlist builder
+- 🛒 [FamilyCart](https://github.com/splinesreticulating/family-cart) – A shared grocery list supporting screenshots
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 🧠 Currently Learning
+- LLM integrations (RAG, embeddings)
+- Typescript, typescript, typescript
+
+Drop me a line or check out my pinned projects below 👇
