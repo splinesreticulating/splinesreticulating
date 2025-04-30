@@ -4,12 +4,11 @@ I like to build practical, playful, and useful things.
 
 ### 🔧 Featured Projects
 - 💬 [WellSaid](https://github.com/splinesreticulating/well-said) – Empathetic iMessage responses from an ever-expanding knowledgebase
-- 🎵 [Spotify Jukebox](https://github.com/splinesreticulating/spotify-jukebox) – Pick the perfect next song
-- 📻 [Spotify DJ](https://github.com/splinesreticulating/spotify-dj) – Smart live playlist builder
+- 🎵 [Queue FM](https://github.com/splinesreticulating/queue-fm) – Spotify-powered meta-data enhanced radio station with poweful control panel
 - 🛒 [FamilyCart](https://github.com/splinesreticulating/family-cart) – A shared grocery list supporting screenshots
 
-### 🧠 Currently Learning
+### 🧠 Currently Hacking on
 - LLM integrations (RAG, embeddings)
-- Typescript, typescript, typescript
+- React, Typescript, AWS
 
 Drop me a line or check out my pinned projects below 👇
