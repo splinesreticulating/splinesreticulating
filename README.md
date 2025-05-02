@@ -10,5 +10,3 @@ Hi, I'm James and I like to automate things.
 - LLM integrations (RAG, embeddings)
 - React, Typescript
 - AWS everything
-
-Drop me a line or check out my pinned projects below 👇
