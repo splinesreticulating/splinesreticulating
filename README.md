@@ -1,12 +1,1 @@
-# 👨‍💻 About Me
-
-Hi I'm James and I like to automate things.
-
-## 🔧 Featured Projects
-- 💬 [WellSaid](https://github.com/splinesreticulating/well-said) – Empathetic iMessage responses from an ever-expanding knowledgebase
-- 🎵 [Queue FM](https://github.com/splinesreticulating/queue-fm) – Spotify-powered meta-data enhanced radio station with poweful control panel
-
-## 🧠 Currently Broadening Horizons on
-- LLM integrations (RAG, embeddings)
-- React, Typescript
-- AWS everything
+Hi, I'm James, and I like to automate things.
