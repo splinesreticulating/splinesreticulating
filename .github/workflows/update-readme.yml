@@ -1,0 +1,68 @@
+name: Update Deep Thought of the Day
+
+on:
+  schedule:
+    # Runs at 00:00 UTC daily
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Update README with thought of the day
+        run: |
+          # Get day of year (1-365/366) to select which thought to display
+          DAY_OF_YEAR=$(date +%j)
+          
+          # Remove leading zeros from day of year
+          DAY_OF_YEAR=$((10#$DAY_OF_YEAR))
+          
+          # Count total number of thoughts
+          TOTAL_THOUGHTS=$(wc -l < thoughts.txt)
+          
+          # Calculate which thought to use (cycle through if needed)
+          THOUGHT_INDEX=$(( (DAY_OF_YEAR - 1) % TOTAL_THOUGHTS + 1 ))
+          
+          # Get the thought for today
+          THOUGHT_LINE=$(sed -n "${THOUGHT_INDEX}p" thoughts.txt)
+          
+          # Split into quote and author
+          THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
+          AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
+          
+          # Get current date in a nice format
+          CURRENT_DATE=$(date '+%B %d, %Y')
+          
+          # Create the new README
+          cat > README.md << 'EOF'
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=420&lines=SHALL+WE+PLAY+A+GAME?)
+          
+          ## 🧠 Deep Thought of the Day
+          
+          **${CURRENT_DATE}**
+          
+          > ${THOUGHT}
+          > 
+          > — *${AUTHOR}*
+          
+          ---
+          
+          *Thought updates daily at midnight UTC*
+          EOF
+          
+          # Replace the placeholders with actual values
+          sed -i "s/\${CURRENT_DATE}/$CURRENT_DATE/" README.md
+          sed -i "s/\${THOUGHT}/$THOUGHT/" README.md
+          sed -i "s/\${AUTHOR}/$AUTHOR/" README.md
+      
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update deep thought for $(date '+%B %d, %Y')" && git push)
