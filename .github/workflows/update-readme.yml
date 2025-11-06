@@ -85,7 +85,7 @@ jobs:
             *) SUFFIX="th";;
           esac
           
-          DATE_STRING="$MONTH ${DAY}${SUFFIX}"
+          DATE_STRING="${MONTH,,} ${DAY}${SUFFIX}"
           
           # Create the new README
           cat > README.md << 'EOF'
