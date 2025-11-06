@@ -35,27 +35,29 @@ jobs:
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
           
+          # Truncate thought if too long (max ~60 chars for typing SVG)
+          TYPING_TEXT="$THOUGHT"
+          if [ ${#TYPING_TEXT} -gt 60 ]; then
+            TYPING_TEXT="${TYPING_TEXT:0:57}..."
+          fi
+          
           # URL encode the thought for the typing SVG
-          ENCODED_THOUGHT=$(echo "$THOUGHT" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed 's/;/%3B/g' | sed "s/'/%27/g" | sed 's/"/%22/g')
+          ENCODED_THOUGHT=$(echo "$TYPING_TEXT" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed 's/;/%3B/g' | sed "s/'/%27/g" | sed 's/"/%22/g' | sed 's/\./%2E/g')
           
           # Get current date in a nice format
           CURRENT_DATE=$(date '+%B %d, %Y')
           
           # Create the new README
           cat > README.md << 'EOF'
-          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=800&lines=${ENCODED_THOUGHT})
-          
           ## 🧠 Deep Thought of the Day
+          
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=800&lines=${ENCODED_THOUGHT})
           
           **${CURRENT_DATE}**
           
           > ${THOUGHT}
           > 
           > — *${AUTHOR}*
-          
-          ---
-          
-          *Thought updates daily at midnight UTC*
           EOF
           
           # Replace the placeholders with actual values
