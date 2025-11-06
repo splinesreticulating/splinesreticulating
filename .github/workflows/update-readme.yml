@@ -89,7 +89,7 @@ jobs:
           
           # Create the new README
           cat > README.md << 'EOF'
-          ## 🧠 Deep Thought for ${DATE_STRING}
+          ## .: deep thought for ${DATE_STRING} :.
           
           ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=1000&color=00FF00&vCenter=true&width=800&lines=${ENCODED_LINES})
           EOF
