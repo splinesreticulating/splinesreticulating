@@ -35,16 +35,12 @@ jobs:
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
           
-          # Create typing text with author attribution
-          TYPING_TEXT="$THOUGHT - $AUTHOR"
+          # URL encode both lines for the typing SVG (semicolon separates lines)
+          ENCODED_THOUGHT=$(echo "$THOUGHT" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed 's/;/%3B/g' | sed "s/'/%27/g" | sed 's/"/%22/g' | sed 's/\./%2E/g' | sed 's/-/%2D/g')
+          ENCODED_AUTHOR=$(echo "— $AUTHOR" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed "s/'/%27/g" | sed 's/"/%22/g' | sed 's/—/%E2%80%94/g')
           
-          # Truncate if too long (max ~80 chars for typing SVG)
-          if [ ${#TYPING_TEXT} -gt 80 ]; then
-            TYPING_TEXT="${TYPING_TEXT:0:77}..."
-          fi
-          
-          # URL encode the thought for the typing SVG
-          ENCODED_THOUGHT=$(echo "$TYPING_TEXT" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed 's/;/%3B/g' | sed "s/'/%27/g" | sed 's/"/%22/g' | sed 's/\./%2E/g' | sed 's/-/%2D/g')
+          # Combine with semicolon for multiple lines
+          ENCODED_LINES="${ENCODED_THOUGHT};${ENCODED_AUTHOR}"
           
           # Get current date in a nice format (e.g., "November 5th")
           DAY=$(date '+%d' | sed 's/^0//')
@@ -64,11 +60,11 @@ jobs:
           cat > README.md << 'EOF'
           ## 🧠 Deep Thought for ${DATE_STRING}
           
-          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=800&lines=${ENCODED_THOUGHT})
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=1000&color=00FF00&vCenter=true&width=800&lines=${ENCODED_LINES})
           EOF
           
           # Replace the placeholders with actual values
-          sed -i "s|\${ENCODED_THOUGHT}|$ENCODED_THOUGHT|" README.md
+          sed -i "s|\${ENCODED_LINES}|$ENCODED_LINES|" README.md
           sed -i "s/\${DATE_STRING}/$DATE_STRING/" README.md
       
       - name: Commit and push if changed
