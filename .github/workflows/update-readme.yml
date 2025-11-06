@@ -35,12 +35,15 @@ jobs:
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
           
+          # URL encode the thought for the typing SVG
+          ENCODED_THOUGHT=$(echo "$THOUGHT" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed 's/;/%3B/g' | sed "s/'/%27/g" | sed 's/"/%22/g')
+          
           # Get current date in a nice format
           CURRENT_DATE=$(date '+%B %d, %Y')
           
           # Create the new README
           cat > README.md << 'EOF'
-          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=420&lines=SHALL+WE+PLAY+A+GAME?)
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=400&color=00FF00&vCenter=true&width=800&lines=${ENCODED_THOUGHT})
           
           ## 🧠 Deep Thought of the Day
           
@@ -56,6 +59,7 @@ jobs:
           EOF
           
           # Replace the placeholders with actual values
+          sed -i "s|\${ENCODED_THOUGHT}|$ENCODED_THOUGHT|" README.md
           sed -i "s/\${CURRENT_DATE}/$CURRENT_DATE/" README.md
           sed -i "s/\${THOUGHT}/$THOUGHT/" README.md
           sed -i "s/\${AUTHOR}/$AUTHOR/" README.md
