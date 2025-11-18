@@ -9,95 +9,53 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Update README with thought of the day
         run: |
-          # Get day of year (1-365/366) to select which thought to display
-          DAY_OF_YEAR=$(date +%j)
-          
-          # Remove leading zeros from day of year
-          DAY_OF_YEAR=$((10#$DAY_OF_YEAR))
-          
-          # Count total number of thoughts
+          # Select thought based on day of year
+          DAY_OF_YEAR=$(date +%-j)  # %-j removes leading zeros
           TOTAL_THOUGHTS=$(wc -l < thoughts.txt)
-          
-          # Calculate which thought to use (cycle through if needed)
           THOUGHT_INDEX=$(( (DAY_OF_YEAR - 1) % TOTAL_THOUGHTS + 1 ))
-          
-          # Get the thought for today
+
+          # Extract quote and author
           THOUGHT_LINE=$(sed -n "${THOUGHT_INDEX}p" thoughts.txt)
-          
-          # Split into quote and author
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
-          
-          # Function to split text into lines of max 60 chars at word boundaries
-          split_text() {
-            local text="$1"
-            local max_len=60
-            local result=""
-            
-            while [ ${#text} -gt $max_len ]; do
-              # Find last space within max_len
-              local chunk="${text:0:$max_len}"
-              local last_space=$(echo "$chunk" | grep -o ' ' | wc -l)
-              
-              if [ $last_space -gt 0 ]; then
-                # Cut at last space
-                local cut_pos=$(echo "$chunk" | sed 's/\(.*\) .*/\1/' | wc -c)
-                cut_pos=$((cut_pos - 1))
-                result="${result}${text:0:$cut_pos};"
-                text="${text:$((cut_pos + 1))}"
-              else
-                # No space found, just cut at max_len
-                result="${result}${text:0:$max_len};"
-                text="${text:$max_len}"
-              fi
-            done
-            
-            # Add remaining text
-            result="${result}${text}"
-            echo "$result"
-          }
-          
-          # Split the thought into multiple lines if needed
-          SPLIT_THOUGHT=$(split_text "$THOUGHT")
-          
-          # Add author on final line
-          TYPING_LINES="${SPLIT_THOUGHT};— ${AUTHOR}"
-          
+
+          # Wrap text at 60 characters using fold
+          WRAPPED=$(echo "$THOUGHT" | fold -s -w 60 | sed 's/$/;/' | tr '\n' ' ' | sed 's/; $//')
+
+          # Combine quote and author
+          TYPING_LINES="${WRAPPED};— ${AUTHOR}"
+
           # URL encode for the typing SVG
-          ENCODED_LINES=$(echo "$TYPING_LINES" | sed 's/ /+/g' | sed 's/,/%2C/g' | sed "s/'/%27/g" | sed 's/"/%22/g' | sed 's/\./%2E/g' | sed 's/-/%2D/g' | sed 's/—/%E2%80%94/g' | sed 's/:/%3A/g')
-          
-          # Get current date in a nice format (e.g., "November 5th")
-          DAY=$(date '+%d' | sed 's/^0//')
-          MONTH=$(date '+%B')
-          
-          # Add proper suffix (st, nd, rd, th)
+          ENCODED_LINES=$(printf '%s' "$TYPING_LINES" | jq -sRr @uri | sed 's/%0A//g')
+
+          # Format date with ordinal suffix
+          DAY=$(date +%-d)
+          MONTH=$(date +%B)
+          YEAR=$(date +%Y)
+
           case $DAY in
             1|21|31) SUFFIX="st";;
             2|22) SUFFIX="nd";;
             3|23) SUFFIX="rd";;
             *) SUFFIX="th";;
           esac
-          
-          DATE_STRING="${MONTH,,} ${DAY}${SUFFIX}"
-          
-          # Create the new README
-          cat > README.md << 'EOF'
-          ## .: deep thought for ${DATE_STRING} :.
-          
+
+          DATE_STRING="${MONTH} ${DAY}${SUFFIX}, ${YEAR}"
+
+          # Generate README
+          cat > README.md << EOF
+          ## ${DATE_STRING}
+
           ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=1000&color=00FF00&vCenter=true&width=800&lines=${ENCODED_LINES})
           EOF
-          
-          # Replace the placeholders with actual values
-          sed -i "s|\${ENCODED_LINES}|$ENCODED_LINES|" README.md
-          sed -i "s/\${DATE_STRING}/$DATE_STRING/" README.md
-      
+
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
