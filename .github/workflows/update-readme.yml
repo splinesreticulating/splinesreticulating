@@ -53,7 +53,7 @@ jobs:
           cat > README.md << EOF
           ## ${DATE_STRING}
 
-          ![Typing SVG](https://readme-typing-svg.demolab.com?font=IBM+Plex+Mono&pause=1000&color=CD00CD&vCenter=true&width=800&lines=${ENCODED_LINES})
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=Inter&pause=1000&color=CD00CD&vCenter=true&width=800&lines=${ENCODED_LINES})
           EOF
 
       - name: Commit and push if changed
