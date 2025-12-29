@@ -26,8 +26,8 @@ jobs:
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
 
-          # Wrap text at 60 characters using fold
-          WRAPPED=$(echo "$THOUGHT" | fold -s -w 60 | sed 's/$/;/' | tr '\n' ' ' | sed 's/; $//')
+          # Wrap text at 80 characters using fold
+          WRAPPED=$(echo "$THOUGHT" | fold -s -w 80 | sed 's/$/;/' | tr '\n' ' ' | sed 's/; $//')
 
           # Combine quote and author
           TYPING_LINES="${WRAPPED};— ${AUTHOR}"
