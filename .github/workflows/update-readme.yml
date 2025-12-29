@@ -1,61 +1,47 @@
 name: Update Deep Thought of the Day
-
 on:
   schedule:
     # Runs at 00:00 UTC daily
     - cron: '0 0 * * *'
   workflow_dispatch:  # Allows manual trigger
-
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Update README with thought of the day
         run: |
           # Select thought based on day of year
           DAY_OF_YEAR=$(date +%-j)  # %-j removes leading zeros
           TOTAL_THOUGHTS=$(wc -l < thoughts.txt)
           THOUGHT_INDEX=$(( (DAY_OF_YEAR - 1) % TOTAL_THOUGHTS + 1 ))
-
           # Extract quote and author
           THOUGHT_LINE=$(sed -n "${THOUGHT_INDEX}p" thoughts.txt)
           THOUGHT=$(echo "$THOUGHT_LINE" | cut -d'|' -f1)
           AUTHOR=$(echo "$THOUGHT_LINE" | cut -d'|' -f2)
-
           # Wrap text at 80 characters using fold
           WRAPPED=$(echo "$THOUGHT" | fold -s -w 80 | sed 's/$/;/' | tr '\n' ' ' | sed 's/; $//')
-
-          # Combine quote and author
-          TYPING_LINES="${WRAPPED};— ${AUTHOR}"
-
+          # Combine quote and author with italic quotes
+          TYPING_LINES="\"${WRAPPED}\";— ${AUTHOR}"
           # URL encode for the typing SVG
           ENCODED_LINES=$(printf '%s' "$TYPING_LINES" | jq -sRr @uri | sed 's/%0A//g')
-
           # Format date with ordinal suffix
           DAY=$(date +%-d)
           MONTH=$(date +%B)
           YEAR=$(date +%Y)
-
           case $DAY in
             1|21|31) SUFFIX="st";;
             2|22) SUFFIX="nd";;
             3|23) SUFFIX="rd";;
             *) SUFFIX="th";;
           esac
-
           DATE_STRING="${MONTH} ${DAY}${SUFFIX}, ${YEAR}"
-
           # Generate README
           cat > README.md << EOF
           ## ${DATE_STRING}
-
-          ![Typing SVG](https://readme-typing-svg.demolab.com?font=VT323&pause=1000&color=CD00CD&vCenter=true&width=800&lines=${ENCODED_LINES})
+          ![Typing SVG](https://readme-typing-svg.demolab.com?font=VT323&pause=1000&color=CD00CD&vCenter=true&width=800&style=italic&lines=${ENCODED_LINES})
           EOF
-
       - name: Commit and push if changed
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
