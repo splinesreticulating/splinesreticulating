@@ -1,2 +1,2 @@
-## December 31st, 2025
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Kalam&pause=1000&color=CD00CD&vCenter=true&width=800&style=italic&lines=%22Life%20is%20what%20happens%20when%20you%27re%20busy%20making%20other%20plans.%22%3B%E2%80%94%20John%20Lennon)
+## January 1st, 2026
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Kalam&pause=1000&color=CD00CD&vCenter=true&width=800&style=italic&lines=%22The%20only%20true%20wisdom%20is%20in%20knowing%20you%20know%20nothing.%22%3B%E2%80%94%20Socrates)
