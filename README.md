@@ -1,2 +1,2 @@
-## April 2nd, 2026
-![Typing SVG](https://readme-typing-svg.demolab.com?font=Kalam&pause=1000&color=0E8A16&vCenter=true&width=800&style=italic&lines=%22We%20have%20two%20ears%20and%20one%20mouth%20so%20that%20we%20can%20listen%20twice%20as%20much%20as%20we%20speak.%22%3B%E2%80%94%20Epictetus)
+## April 3rd, 2026
+![Typing SVG](https://readme-typing-svg.demolab.com?font=Kalam&pause=1000&color=0E8A16&vCenter=true&width=800&style=italic&lines=%22The%20only%20true%20wisdom%20is%20in%20knowing%20you%20know%20nothing.%22%3B%E2%80%94%20Socrates)
